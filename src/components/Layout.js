@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import InitialWeather from './InitialWeather'
+import WeatherLookup from './WeatherLookup'
 import GetLocationAction from '../actions/GetLocationAction'
 import GetLocationServerAction from '../actions/GetLocationServerAction'
 import WeatherStore from '../stores/WeatherStore'
+import WeatherByZip from './WeatherByZip'
 
 export default class Layout extends Component {
   constructor() {
     super();
     this.state = {
-      conditions: WeatherStore.getConditions()
+      conditions: WeatherStore.getConditions(),
+      weather: WeatherStore.getWeatherByZipCode()
     }
     this.onChange = this.onChange.bind(this)
     // this.grabConditions = this.grabConditions.bind(this)
@@ -25,7 +28,8 @@ export default class Layout extends Component {
 
   onChange(){
     this.setState({
-      conditions: WeatherStore.getConditions()
+      conditions: WeatherStore.getConditions(),
+      weather: WeatherStore.getWeatherByZipCode()
     })
   }
 
@@ -33,12 +37,22 @@ export default class Layout extends Component {
 
   render() {
 
-    let { conditions } = this.state
+    let { conditions, weather } = this.state
     return (
       <div className='container'>
-        <h1 className='text-center'>Weather App - It's a Code Storm</h1>
-        {!this.state.conditions ? <h4>No Conditions</h4> : <InitialWeather conditions={this.state.conditions} />}
-        <button className='btn btn-lg btn-primary'>Get Conditions</button>
+        <div className="row">
+          <div className="col-xs-12 text-center">
+            <h1 className='text-center'>Weather App - It's a Code Storm</h1>
+            <h4>Weather Report Brought to You By Coca-Cola</h4>
+            {!this.state.conditions ? <h4>No Conditions</h4> : <InitialWeather conditions={this.state.conditions} />}
+          </div>
+        </div>
+        <WeatherLookup />
+        <div className="row">
+          <div className="col-xs-12 weatherByZipContainer text-center">
+            <WeatherByZip weather={weather} />
+          </div>
+        </div>
       </div>
     )
   }

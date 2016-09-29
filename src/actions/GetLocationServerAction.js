@@ -1,9 +1,15 @@
 import API from '../API'
 
+let location = null
+
 const GetLocationServerAction = {
-  receiveConditions() {
-    console.log('GetLocationAction has been triggered: ' )
-    API.fetchInitWeather()
+  receiveConditions(myLoc) {
+    if(!myLoc){
+      location = 'autoip.json'
+    } else {
+      location = myLoc
+    }
+    API.fetchInitWeather(location)
   }
 }
 
